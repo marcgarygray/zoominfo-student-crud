@@ -55,7 +55,6 @@ app.get('/students', async (_, res) => {
     res.json({ error: 'Students could not be retrieved.' });
   }
 });
-
 app.get('/student/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -73,7 +72,6 @@ app.get('/student/:id', async (req, res) => {
 });
 
 // UPDATE
-// update for single student here
 app.put('/student/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -109,7 +107,6 @@ app.delete('/student/:id', async (req, res) => {
     res.json({ error: 'Student could not be deleted.' });
   }
 });
-
 app.delete('/students', async (req, res) => {
   try {
     const { studentIds } = req.body;
