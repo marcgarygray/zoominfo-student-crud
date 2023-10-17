@@ -16,14 +16,17 @@ const StyledPage = styled.div<{ $theme: Theme }>`
   color: black;
   box-sizing: border-box;
   height: 100vh;
+
   a {
     text-decoration: none;
   }
+
   ${({ $theme }) =>
     $theme === Theme.dark &&
     css`
       background: ${colors.nearlyBlack};
       color: white;
+
       a {
         color: ${colors.cornflower};
         &:visited {
