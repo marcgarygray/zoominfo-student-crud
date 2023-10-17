@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { Page } from '../components/page';
 import { useClassesData } from '../hooks/use-classes-data';
 import { useStudentsData } from '../hooks/use-students-data';
-import { formatDate, getSortedAndFilteredStudents } from '../utils';
+import {
+  deleteMultipleStudents,
+  deleteSingleStudent,
+  formatDate,
+  getSortedAndFilteredStudents,
+} from '../utils';
 import { ListHeader } from '../components/student-list-page-header';
 import { Button } from '../components/button';
 import { useNavigate } from 'react-router-dom';
@@ -43,11 +48,11 @@ export function Students() {
   const [classFilter, setClassFilter] = useState(0);
   const [searchString, setSearchString] = useState('');
 
-  // data
   /**
    * Future improvement: Using a fetching library (React Query)
    * so we don't need to manually handle refetch logic and can use cache invalidation
    */
+  // data
   const [refetch, setRefetch] = useState(false);
   const { students, loading: studentsLoading } = useStudentsData({
     refetch,
@@ -89,6 +94,36 @@ export function Students() {
     }
   };
 
+  // prevent users with slow connections from clicking buttons while a resource is being deleted
+  const [deleting, setDeleting] = useState(0);
+  const onSingleDeleteClick = async (id: number) => {
+    setDeleting(id);
+    try {
+      await deleteSingleStudent(id);
+      setRefetch(true);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setDeleting(0);
+    }
+  };
+
+  // prevent users with slow connections from clicking buttons while resources are being deleted
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const onBulkDeleteClick = async () => {
+    setBulkDeleting(true);
+    try {
+      await deleteMultipleStudents(
+        Object.keys(selectedStudents).map((key) => Number(key))
+      );
+      setRefetch(true);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
   const sortedAndFilteredStudents = useMemo(
     () =>
       getSortedAndFilteredStudents({
@@ -103,8 +138,10 @@ export function Students() {
   return (
     <Page>
       <ListHeader
+        bulkDeleting={bulkDeleting}
         tableLoading={loading}
         onAddStudentClick={() => navigate('/student/new')}
+        onBulkDeleteClick={onBulkDeleteClick}
       />
       {loading ? (
         'Loading...'
@@ -177,10 +214,18 @@ export function Students() {
                   <td>{student.age}</td>
                   <td>{formatDate(student.createdAt)}</td>
                   <ButtonCell>
-                    <Button onClick={() => navigate(`/student/${student.id}`)}>
+                    <Button
+                      disabled={student.id === deleting}
+                      onClick={() => navigate(`/student/${student.id}`)}
+                    >
                       Edit
                     </Button>
-                    <Button onClick={() => setRefetch(true)}>Delete</Button>
+                    <Button
+                      disabled={student.id === deleting}
+                      onClick={() => onSingleDeleteClick(student.id)}
+                    >
+                      Delete
+                    </Button>
                   </ButtonCell>
                 </tr>
               ))}

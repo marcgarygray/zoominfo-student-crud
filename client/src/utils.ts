@@ -24,6 +24,22 @@ export function post({
   });
 }
 
+export function deleteSingleStudent(id: number) {
+  return fetch(`/student/${id}`, {
+    method: 'DELETE',
+  });
+}
+
+export function deleteMultipleStudents(ids: number[]) {
+  return fetch('/students', {
+    method: 'DELETE',
+    body: JSON.stringify({
+      studentIds: ids,
+    }),
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 /**
  * Future improvement
  * Consider a datetime library if needs dictate (date-fns)
@@ -45,46 +61,59 @@ export function getSortedAndFilteredStudents({
   sortModel,
   students,
 }: SortAndFilterFunctionArg) {
-  return students
-    .filter((student) => {
-      let exclude = false;
-      if (classFilter !== 0) {
-        exclude =
-          student.classes.find((_class) => _class.id === classFilter) ===
-          undefined;
-      }
-      // we only need to keep checking if we aren't already excluding the record
-      if (!exclude && searchString !== '') {
-        const match =
-          student.firstName
-            .toLowerCase()
-            .includes(searchString.toLowerCase()) ||
-          student.lastName.toLowerCase().includes(searchString.toLowerCase());
-        exclude = !match;
-      }
-      return !exclude;
-    })
-    .sort((a, b) => {
-      switch (sortModel.column) {
-        case SortableColumn.Age:
-          if (sortModel.direction === SortDirection.ASC) {
-            return a.age - b.age;
-          } else {
-            return b.age - a.age;
-          }
-        case SortableColumn.DateAdded:
-          return 0;
-        case SortableColumn.LastName:
-          const compared = a.lastName
-            .toLocaleLowerCase()
-            .localeCompare(b.lastName.toLocaleLowerCase());
-          if (sortModel.direction === SortDirection.ASC) {
-            return compared;
-          } else {
-            return compared * -1;
-          }
-        default:
-          return 0;
-      }
-    });
+  return (
+    students
+      // filter first so we have to sort less items
+      .filter((student) => {
+        let exclude = false;
+        if (classFilter !== 0) {
+          exclude =
+            student.classes.find((_class) => _class.id === classFilter) ===
+            undefined;
+        }
+        // we only need to keep checking if we aren't already excluding the record
+        if (!exclude && searchString !== '') {
+          const match =
+            student.firstName
+              .toLocaleLowerCase()
+              .includes(searchString.toLocaleLowerCase()) ||
+            student.lastName
+              .toLocaleLowerCase()
+              .includes(searchString.toLocaleLowerCase());
+          exclude = !match;
+        }
+        return !exclude;
+      })
+      .sort((a, b) => {
+        switch (sortModel.column) {
+          case SortableColumn.Age:
+            const ageCompare = a.age - b.age;
+            if (sortModel.direction === SortDirection.ASC) {
+              return ageCompare;
+            } else {
+              return ageCompare * -1;
+            }
+          case SortableColumn.DateAdded:
+            const firstDate = new Date(a.createdAt).valueOf();
+            const secondDate = new Date(b.createdAt).valueOf();
+            const dateCompare = firstDate - secondDate;
+            if (sortModel.direction === SortDirection.ASC) {
+              return dateCompare;
+            } else {
+              return dateCompare * -1;
+            }
+          case SortableColumn.LastName:
+            const stringCompare = a.lastName
+              .toLocaleLowerCase()
+              .localeCompare(b.lastName.toLocaleLowerCase());
+            if (sortModel.direction === SortDirection.ASC) {
+              return stringCompare;
+            } else {
+              return stringCompare * -1;
+            }
+          default:
+            return 0;
+        }
+      })
+  );
 }
