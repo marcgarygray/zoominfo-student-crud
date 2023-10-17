@@ -30,7 +30,7 @@ npm run dev
 The back end should now be listening for requests at `http://localhost:3001`.
 
 The provided seed data has two sample students and five sample classes.
-To validate the API is running, you can visit `http://localhost:3001/students/1` and validate you get a response body with a student resource.
+To validate the API is running, you can visit `http://localhost:3001/students/1` in your browser and validate that you get a response body with a student resource.
 
 ## Client
 
@@ -41,8 +41,7 @@ TL;DR:
 All commands assume you're in the `client` directory of this project.
 
 ```
-npm install
-npm run start
+npm start
 ```
 
 The app should be running at `http://localhost:3000/`.
