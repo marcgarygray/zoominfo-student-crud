@@ -17,9 +17,18 @@ app.use(cors());
 // CREATE
 app.post('/student', async (req, res) => {
   try {
-    const studentData = req.body;
+    const { classIds, ...studentData } = req.body;
     const student = await prisma.student.create({
-      data: studentData,
+      data: {
+        ...studentData,
+        createdAt: new Date(),
+        classes: {
+          connect: classIds?.map((id: string) => ({ id: Number(id) })),
+        },
+      },
+      include: {
+        classes: true,
+      },
     });
     res.status(201).json(student);
   } catch (e) {
@@ -30,8 +39,16 @@ app.post('/student', async (req, res) => {
 
 // READ
 app.get('/students', async (_, res) => {
+  /**
+   * Future improvement: Server-side pagination, filtering, and sorting;
+   * out of scope for this effort.
+   */
   try {
-    const students = await prisma.student.findMany();
+    const students = await prisma.student.findMany({
+      include: {
+        classes: true,
+      },
+    });
     res.json(students);
   } catch (e) {
     console.error(e); // in production, we'd want to replace this with a persisted log for debugging
@@ -57,16 +74,40 @@ app.get('/student/:id', async (req, res) => {
 
 // UPDATE
 // update for single student here
+app.put('/student/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { classIds, ...studentData } = req.body;
+    const student = await prisma.student.update({
+      data: {
+        ...studentData,
+        classes: { set: classIds?.map((id: string) => ({ id: Number(id) })) },
+      },
+      where: {
+        id: Number(id),
+      },
+    });
+    res.json(student);
+  } catch (e) {
+    console.error(e); // in production, we'd want to replace this with a persisted log for debugging
+    res.json({ error: 'Student could not be updated.' });
+  }
+});
 
 // DELETE
 app.delete('/student/:id', async (req, res) => {
-  const { id } = req.params;
-  const student = await prisma.student.delete({
-    where: {
-      id: Number(id),
-    },
-  });
-  res.json(student);
+  try {
+    const { id } = req.params;
+    const student = await prisma.student.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    res.json(student);
+  } catch (e) {
+    console.error(e); // in production, we'd want to replace this with a persisted log for debugging
+    res.json({ error: 'Student could not be deleted.' });
+  }
 });
 
 app.delete('/students', async (req, res) => {
