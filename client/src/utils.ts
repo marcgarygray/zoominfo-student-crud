@@ -1,3 +1,8 @@
+/**
+ * Future improvment:
+ * Use a modern HTTP library such as axios
+ */
+
 export function get(url: string) {
   return fetch(url);
 }

@@ -122,6 +122,17 @@ app.delete('/students', async (req, res) => {
   }
 });
 
+// list of classes
+app.get('/classes', (_, res) => {
+  try {
+    const classes = prisma.class.findMany();
+    res.json(classes);
+  } catch (e) {
+    console.error(e); // in production, we'd want to replace this with a persisted log for debugging
+    res.json({ error: 'Classes could not be retrieved.' });
+  }
+});
+
 app.listen(3001, () =>
   console.log('🚀 Server ready at: http://localhost:3001')
 );
