@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 export function ThemeToggle() {
   const { theme, onToggle } = useTheme();
   return (
-    <Toggle $theme={theme} onClick={onToggle}>
+    <Toggle $theme={theme} onClick={onToggle} type="button">
       Enable {theme === Theme.dark ? 'Light' : 'Dark'} Mode
     </Toggle>
   );
@@ -19,6 +19,7 @@ const Toggle = styled.button<{ $theme: Theme }>`
   border: 1px solid black;
   border-radius: 4px;
   padding: 4px 8px;
+  cursor: pointer;
   ${({ $theme }) =>
     $theme === Theme.dark &&
     css`
