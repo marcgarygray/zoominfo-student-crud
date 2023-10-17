@@ -21,7 +21,10 @@ const StyledButton = styled.button<{ $theme: Theme }>`
   padding: 4px 8px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  &:hover {
+  &:disabled {
+    cursor: not-allowed;
+  }
+  &:hover&:not(:disabled) {
     background: ${colors.white20};
   }
   ${({ $theme }) =>
@@ -29,7 +32,7 @@ const StyledButton = styled.button<{ $theme: Theme }>`
     css`
       color: ${colors.white20};
       border-color: ${colors.white20};
-      &:hover {
+      &:hover&:not(:disabled) {
         background: ${colors.nearlyBlack90};
         color: ${colors.white};
         border-color: ${colors.white};

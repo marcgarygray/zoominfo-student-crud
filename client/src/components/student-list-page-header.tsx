@@ -1,29 +1,26 @@
 import { Button } from './button';
 import styled from 'styled-components';
 type ListHeaderProps = {
-  bulkDeleting: boolean;
-  tableLoading: boolean;
+  disableAddButton: boolean;
+  disableBulkDeleteButton: boolean;
   onAddStudentClick: () => void;
   onBulkDeleteClick: () => void;
 };
 
 export function ListHeader({
-  bulkDeleting,
-  tableLoading,
+  disableAddButton,
+  disableBulkDeleteButton,
   onAddStudentClick,
   onBulkDeleteClick,
 }: ListHeaderProps) {
   return (
     <Row>
-      <h1>Student List</h1>
+      <h1>Students</h1>
       <ButtonGroup>
-        <Button
-          disabled={tableLoading || bulkDeleting}
-          onClick={onBulkDeleteClick}
-        >
+        <Button disabled={disableBulkDeleteButton} onClick={onBulkDeleteClick}>
           Deleted Selected Students
         </Button>
-        <Button disabled={bulkDeleting} onClick={onAddStudentClick}>
+        <Button disabled={disableAddButton} onClick={onAddStudentClick}>
           Add Student
         </Button>
       </ButtonGroup>

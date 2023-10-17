@@ -45,7 +45,7 @@ export function Students() {
     column: SortableColumn.LastName,
     direction: SortDirection.ASC,
   });
-  const [classFilter, setClassFilter] = useState(0);
+  const [classFilter, setClassFilter] = useState(-1);
   const [searchString, setSearchString] = useState('');
 
   /**
@@ -96,6 +96,7 @@ export function Students() {
 
   // prevent users with slow connections from clicking buttons while a resource is being deleted
   const [deleting, setDeleting] = useState(0);
+  // Future improvement - destructive actions should have a confirmation modal or similar
   const onSingleDeleteClick = async (id: number) => {
     setDeleting(id);
     try {
@@ -110,6 +111,7 @@ export function Students() {
 
   // prevent users with slow connections from clicking buttons while resources are being deleted
   const [bulkDeleting, setBulkDeleting] = useState(false);
+  // Future improvement - destructive actions should have a confirmation modal or similar
   const onBulkDeleteClick = async () => {
     setBulkDeleting(true);
     try {
@@ -138,8 +140,10 @@ export function Students() {
   return (
     <Page>
       <ListHeader
-        bulkDeleting={bulkDeleting}
-        tableLoading={loading}
+        disableAddButton={bulkDeleting}
+        disableBulkDeleteButton={
+          bulkDeleting || loading || Object.keys(selectedStudents).length === 0
+        }
         onAddStudentClick={() => navigate('/student/new')}
         onBulkDeleteClick={onBulkDeleteClick}
       />

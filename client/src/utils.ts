@@ -24,6 +24,18 @@ export function post({
   });
 }
 
+export function update({
+  student,
+}: {
+  student: Partial<Student> & { id: number };
+}) {
+  return fetch(`/student/${student.id}`, {
+    method: 'PUT',
+    body: JSON.stringify(student),
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 export function deleteSingleStudent(id: number) {
   return fetch(`/student/${id}`, {
     method: 'DELETE',
@@ -66,10 +78,17 @@ export function getSortedAndFilteredStudents({
       // filter first so we have to sort less items
       .filter((student) => {
         let exclude = false;
-        if (classFilter !== 0) {
-          exclude =
-            student.classes.find((_class) => _class.id === classFilter) ===
-            undefined;
+        // classFilter === -1 means no filtering applied
+        if (classFilter !== -1) {
+          // classFilter === 0 means show only students not enrolled in any classes
+          if (classFilter === 0) {
+            exclude = student.classes.length > 0;
+            // otherwise, filter by the selected class
+          } else {
+            exclude =
+              student.classes.find((_class) => _class.id === classFilter) ===
+              undefined;
+          }
         }
         // we only need to keep checking if we aren't already excluding the record
         if (!exclude && searchString !== '') {

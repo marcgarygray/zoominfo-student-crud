@@ -27,7 +27,8 @@ export function TableFilters({
       <div>
         <Label>Filter by class:</Label>
         <Select $theme={theme} onChange={onClassFilterChange}>
-          <option value="0">None</option>
+          <option value="-1">No filter applied</option>
+          <option value="0">No classes</option>
           {classes.map((_class) => (
             <option key={_class.id} value={_class.id}>
               {_class.name}
