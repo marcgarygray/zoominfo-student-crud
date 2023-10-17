@@ -34,7 +34,7 @@ To validate the API is running, you can visit `http://localhost:3001/students/1`
 
 ## Client
 
-For expediency for this code challenge, the front end was built with Create React App (to get proxying and TS configuration for free, mostly). Navigate to the README in the `client` directory for more information (it's boilerplate CRA).
+For expediency for this code challenge, the front end was built with Create React App (to get proxying, TS configuration, and other boilerplate needs). Navigate to the README in the `client` directory for more information (it's the default CRA README).
 
 TL;DR:
 

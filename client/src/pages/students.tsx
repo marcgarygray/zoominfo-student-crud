@@ -1,3 +1,9 @@
+import { Page } from '../components/page';
+
 export function Students() {
-  return <p>Student List here.</p>;
+  return (
+    <Page>
+      <p>Student List here.</p>
+    </Page>
+  );
 }
