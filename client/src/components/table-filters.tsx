@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { Class } from '../hooks/use-classes-data';
 import { Theme, useTheme } from '../hooks/use-theme';
 import { colors } from '../constants';
+import { Input } from './input';
 
 type TableFiltersProps = {
   classes: Class[];
@@ -37,7 +38,6 @@ export function TableFilters({
         </Select>
       </div>
       <Input
-        $theme={theme}
         type="text"
         placeholder="Search students by name..."
         value={search}
@@ -68,19 +68,5 @@ const Select = styled.select<{ $theme: Theme }>`
     $theme === Theme.dark &&
     css`
       color: ${colors.white};
-    `}
-`;
-
-const Input = styled.input<{ $theme: Theme }>`
-  width: 200px;
-  border-radius: 4px;
-  padding: 6px 12px;
-  background: transparent;
-  border: 1px solid black;
-  ${({ $theme }) =>
-    $theme === Theme.dark &&
-    css`
-      color: ${colors.white};
-      border-color: ${colors.white};
     `}
 `;

@@ -27,7 +27,12 @@ export function post({
 export function update({
   student,
 }: {
-  student: Partial<Student> & { id: number };
+  student: {
+    firstName: string;
+    lastName: string;
+    age: number;
+    classIds: number[];
+  } & { id: number };
 }) {
   return fetch(`/student/${student.id}`, {
     method: 'PUT',
