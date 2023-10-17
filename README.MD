@@ -15,10 +15,10 @@ Then:
 npm install
 ```
 
-2. Create and seed the db
+2. Migrate and seed the db
 
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev
 ```
 
 3. Start the API server
