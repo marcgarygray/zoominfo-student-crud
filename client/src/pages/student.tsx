@@ -4,6 +4,8 @@ import { Page } from '../components/page';
 import { get, post, update } from '../utils';
 import { Button } from '../components/button';
 import { Class, useClassesData } from '../hooks/use-classes-data';
+import { Input } from '../components/input';
+import { Form } from '../components/form';
 
 export function Student() {
   const [firstName, setFirstName] = useState('');
@@ -114,10 +116,10 @@ export function Student() {
         <>
           <h1>{isNewStudent ? 'Create' : 'Update'} Student</h1>
           <Button onClick={() => navigate('/students')}>&lt; Back</Button>
-          <form>
+          <Form>
             <div>
               <label htmlFor="firstName">First name:</label>
-              <input
+              <Input
                 id="firstName"
                 type="text"
                 value={firstName}
@@ -126,19 +128,22 @@ export function Student() {
             </div>
             <div>
               <label htmlFor="lastName">Last name:</label>
-              <input
+              <Input
                 id="lastName"
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
-
-            <input
-              type="number"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-            />
+            <div>
+              <label htmlFor="age">Age:</label>
+              <Input
+                id="age"
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+            </div>
             <fieldset>
               <legend>Classes:</legend>
               {classes.map((singleClass) => (
@@ -161,7 +166,7 @@ export function Student() {
             >
               {isNewStudent ? 'Create' : 'Update'}
             </Button>
-          </form>
+          </Form>
         </>
       )}
     </Page>

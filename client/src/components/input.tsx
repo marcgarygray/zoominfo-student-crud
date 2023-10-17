@@ -18,11 +18,11 @@ const StyledInput = styled.input<{ $theme: Theme }>`
   border-radius: 4px;
   padding: 6px 12px;
   background: transparent;
-  border: 1px solid black;
+  border: 1px solid ${colors.black};
   ${({ $theme }) =>
     $theme === Theme.dark &&
     css`
       color: ${colors.white};
       border-color: ${colors.white};
-    `}
+    `};
 `;

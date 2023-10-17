@@ -15,8 +15,8 @@ export function Button(
 
 const StyledButton = styled.button<{ $theme: Theme }>`
   background: none;
-  color: black;
-  border: 1px solid black;
+  color: ${colors.black};
+  border: 1px solid ${colors.black};
   border-radius: 4px;
   padding: 4px 8px;
   cursor: pointer;

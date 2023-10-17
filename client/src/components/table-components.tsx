@@ -24,20 +24,20 @@ const StyledTable = styled.table<{
   $theme: Theme;
 }>`
   font-size: 12px;
-  border: 1px solid black;
+  border: 1px solid ${colors.black};
   border-spacing: 0;
   border-collapse: collapse;
   td {
     padding: 8px;
   }
   thead {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid ${colors.black};
   }
   thead td {
     font-weight: bold;
   }
   td {
-    border: 1px solid black;
+    border: 1px solid ${colors.black};
     border-collapse: collapse;
   }
   ${({ $theme }) =>
