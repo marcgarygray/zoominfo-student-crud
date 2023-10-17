@@ -75,7 +75,14 @@ export function getSortedAndFilteredStudents({
         case SortableColumn.DateAdded:
           return 0;
         case SortableColumn.LastName:
-          return 0;
+          const compared = a.lastName
+            .toLocaleLowerCase()
+            .localeCompare(b.lastName.toLocaleLowerCase());
+          if (sortModel.direction === SortDirection.ASC) {
+            return compared;
+          } else {
+            return compared * -1;
+          }
         default:
           return 0;
       }

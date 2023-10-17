@@ -7,7 +7,11 @@ import { ListHeader } from '../components/student-list-page-header';
 import { Button } from '../components/button';
 import { useNavigate } from 'react-router-dom';
 import { TableFilters } from '../components/table-filters';
-import { ButtonCell } from '../components/table-components';
+import {
+  ButtonCell,
+  SortableColumnHeader,
+  Table,
+} from '../components/table-components';
 
 export enum SortableColumn {
   Age,
@@ -111,20 +115,43 @@ export function Students() {
             onClassFilterChange={(e) => setClassFilter(Number(e.target.value))}
             onSearchInputChange={(value) => setSearchString(value)}
           />
-          <table>
+          <Table>
             <thead>
               <tr>
                 <td></td>
                 <td>ID</td>
                 <td>First Name</td>
-                <td onClick={() => onSortClick(SortableColumn.LastName)}>
+                <SortableColumnHeader
+                  $sortDirection={
+                    sortModel.column === SortableColumn.LastName
+                      ? sortModel.direction
+                      : undefined
+                  }
+                  onClick={() => onSortClick(SortableColumn.LastName)}
+                >
                   Last Name
-                </td>
+                </SortableColumnHeader>
                 <td>Classes</td>
-                <td onClick={() => onSortClick(SortableColumn.Age)}>Age</td>
-                <td onClick={() => onSortClick(SortableColumn.DateAdded)}>
+                <SortableColumnHeader
+                  $sortDirection={
+                    sortModel.column === SortableColumn.Age
+                      ? sortModel.direction
+                      : undefined
+                  }
+                  onClick={() => onSortClick(SortableColumn.Age)}
+                >
+                  Age
+                </SortableColumnHeader>
+                <SortableColumnHeader
+                  $sortDirection={
+                    sortModel.column === SortableColumn.DateAdded
+                      ? sortModel.direction
+                      : undefined
+                  }
+                  onClick={() => onSortClick(SortableColumn.DateAdded)}
+                >
                   Date Added
-                </td>
+                </SortableColumnHeader>
                 <td>Actions</td>
               </tr>
             </thead>
@@ -158,7 +185,7 @@ export function Students() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </>
       )}
     </Page>

@@ -12,7 +12,7 @@ export function Page({ children }: PageProps) {
 
 const StyledPage = styled.div<{ $theme: Theme }>`
   padding: 48px 24px;
-  background: white;
+  background: $colors.white;
   color: black;
   box-sizing: border-box;
   height: 100vh;
@@ -25,7 +25,7 @@ const StyledPage = styled.div<{ $theme: Theme }>`
     $theme === Theme.dark &&
     css`
       background: ${colors.nearlyBlack};
-      color: white;
+      color: ${colors.white};
 
       a {
         color: ${colors.cornflower};

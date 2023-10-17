@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Class } from '../hooks/use-classes-data';
 import { Theme, useTheme } from '../hooks/use-theme';
+import { colors } from '../constants';
 
 type TableFiltersProps = {
   classes: Class[];
@@ -65,7 +66,7 @@ const Select = styled.select<{ $theme: Theme }>`
   ${({ $theme }) =>
     $theme === Theme.dark &&
     css`
-      color: white;
+      color: ${colors.white};
     `}
 `;
 
@@ -78,7 +79,7 @@ const Input = styled.input<{ $theme: Theme }>`
   ${({ $theme }) =>
     $theme === Theme.dark &&
     css`
-      color: white;
-      border-color: white;
+      color: ${colors.white};
+      border-color: ${colors.white};
     `}
 `;
