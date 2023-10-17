@@ -48,7 +48,8 @@ The app should be running at `http://localhost:3000/`.
 
 ## For the reviewer:
 
-The instructions for this assignment indicate that using the least amount of third party libraries is preferable. While this makes perfect sense to me from the perspective of demonstrating technical knowledge and skills, it did put me in a difficult position of not being able to complete everything in the four hour window designated for this task.
+The instructions for this assignment indicate that using the least amount of third party libraries is preferable. While this makes perfect sense to me from the perspective of demonstrating technical knowledge and skills, it did put me in a difficult position of trying to decide where to select libraries versus hand-roll my own solution.
+In the end, I decided to simply eschew any third party library aside from the ones called out in the task description (React, Prisma, Express, Jest).
 I felt it would be better to take a little longer but show that I'm able to perform all of these tasks (table sorting/filtering) with hand-built components.
 That being said, in a real app, I would strongly recommend using libraries for complex problems (server paginated / filtered / sorted tables, for example) and to reduce boilerplate code.
 All of that to say: Preventing myself from using any UI libraries or pre-built components was a fun exercise, but it did mean I had to make some sacrifices along the way. 🙂
