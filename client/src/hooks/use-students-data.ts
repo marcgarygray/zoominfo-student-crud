@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { get } from '../utils';
 import type { Class } from './use-classes-data';
 
@@ -15,7 +15,8 @@ export type Student = {
  * Future improvement
  * Utilize React Query to get loading/error states, caching, and other features
  */
-export function useStudentsData() {
+export function useStudentsData({ refetch }: { refetch?: boolean }) {
+  const hasFetched = useRef(false);
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState<Student[]>([]);
 
@@ -24,6 +25,7 @@ export function useStudentsData() {
       const response = await get('/students');
       const responseBody = await response.json();
       setStudents(responseBody);
+      hasFetched.current = true;
     } catch (e) {
       console.error(e);
     } finally {
@@ -32,8 +34,10 @@ export function useStudentsData() {
   };
 
   useEffect(() => {
-    void fetchStudents();
-  }, []);
+    if (!hasFetched.current || refetch) {
+      void fetchStudents();
+    }
+  }, [hasFetched, refetch]);
 
   return useMemo(
     () => ({

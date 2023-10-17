@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Page } from '../components/page';
 import { useClassesData } from '../hooks/use-classes-data';
 import { useStudentsData } from '../hooks/use-students-data';
@@ -7,14 +7,15 @@ import { ListHeader } from '../components/student-list-page-header';
 import { Button } from '../components/button';
 import { useNavigate } from 'react-router-dom';
 import { TableFilters } from '../components/table-filters';
+import { ButtonCell } from '../components/table-components';
 
-enum SortableColumn {
+export enum SortableColumn {
   Age,
   DateAdded,
   LastName,
 }
 
-enum SortDirection {
+export enum SortDirection {
   ASC,
   DESC,
 }
@@ -39,7 +40,19 @@ export function Students() {
   const [searchString, setSearchString] = useState('');
 
   // data
-  const { students, loading: studentsLoading } = useStudentsData();
+  /**
+   * Future improvement: Using a fetching library (React Query)
+   * so we don't need to manually handle refetch logic and can use cache invalidation
+   */
+  const [refetch, setRefetch] = useState(false);
+  const { students, loading: studentsLoading } = useStudentsData({
+    refetch,
+  });
+  useEffect(() => {
+    if (refetch) {
+      setRefetch(false);
+    }
+  }, [refetch, setRefetch]);
   const { classes, loading: classesLoading } = useClassesData();
 
   const loading = useMemo(
@@ -136,12 +149,12 @@ export function Students() {
                   </td>
                   <td>{student.age}</td>
                   <td>{formatDate(student.createdAt)}</td>
-                  <td>
+                  <ButtonCell>
                     <Button onClick={() => navigate(`/student/${student.id}`)}>
                       Edit
                     </Button>
-                    <Button>Delete</Button>
-                  </td>
+                    <Button onClick={() => setRefetch(true)}>Delete</Button>
+                  </ButtonCell>
                 </tr>
               ))}
             </tbody>

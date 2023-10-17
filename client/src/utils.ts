@@ -4,7 +4,7 @@
  */
 
 import { Student } from './hooks/use-students-data';
-import { SortModel } from './pages/students';
+import { SortDirection, SortModel, SortableColumn } from './pages/students';
 
 export function get(url: string) {
   return fetch(url);
@@ -45,20 +45,39 @@ export function getSortedAndFilteredStudents({
   sortModel,
   students,
 }: SortAndFilterFunctionArg) {
-  return students.filter((student) => {
-    let exclude = false;
-    if (classFilter !== 0) {
-      exclude =
-        student.classes.find((_class) => _class.id === classFilter) ===
-        undefined;
-    }
-    // we only need to keep checking if we aren't already excluding the record
-    if (!exclude && searchString !== '') {
-      const match =
-        student.firstName.includes(searchString) ||
-        student.lastName.includes(searchString);
-      exclude = !match;
-    }
-    return !exclude;
-  });
+  return students
+    .filter((student) => {
+      let exclude = false;
+      if (classFilter !== 0) {
+        exclude =
+          student.classes.find((_class) => _class.id === classFilter) ===
+          undefined;
+      }
+      // we only need to keep checking if we aren't already excluding the record
+      if (!exclude && searchString !== '') {
+        const match =
+          student.firstName
+            .toLowerCase()
+            .includes(searchString.toLowerCase()) ||
+          student.lastName.toLowerCase().includes(searchString.toLowerCase());
+        exclude = !match;
+      }
+      return !exclude;
+    })
+    .sort((a, b) => {
+      switch (sortModel.column) {
+        case SortableColumn.Age:
+          if (sortModel.direction === SortDirection.ASC) {
+            return a.age - b.age;
+          } else {
+            return b.age - a.age;
+          }
+        case SortableColumn.DateAdded:
+          return 0;
+        case SortableColumn.LastName:
+          return 0;
+        default:
+          return 0;
+      }
+    });
 }
