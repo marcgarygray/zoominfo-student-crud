@@ -123,9 +123,9 @@ app.delete('/students', async (req, res) => {
 });
 
 // list of classes
-app.get('/classes', (_, res) => {
+app.get('/classes', async (_, res) => {
   try {
-    const classes = prisma.class.findMany();
+    const classes = await prisma.class.findMany();
     res.json(classes);
   } catch (e) {
     console.error(e); // in production, we'd want to replace this with a persisted log for debugging
