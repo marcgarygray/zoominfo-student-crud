@@ -11,7 +11,7 @@ export function Page({ children }: PageProps) {
 }
 
 const StyledPage = styled.div<{ $theme: Theme }>`
-  padding: 24px;
+  padding: 48px 24px;
   background: white;
   color: black;
   box-sizing: border-box;
