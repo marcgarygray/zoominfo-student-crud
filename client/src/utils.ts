@@ -1,12 +1,11 @@
+import { routes } from './constants';
+import { Student } from './types';
+import { SortDirection, SortModel, SortableColumn } from './types';
+
 /**
  * Future improvement:
  * Use a modern HTTP library such as axios
  */
-
-import { routes } from './constants';
-import { Student } from './hooks/use-students-data';
-import { SortDirection, SortModel, SortableColumn } from './types';
-
 export function get(url: string) {
   return fetch(url);
 }

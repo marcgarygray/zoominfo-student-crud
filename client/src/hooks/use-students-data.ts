@@ -1,16 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { get } from '../utils';
-import { Class } from '../types';
+import { Student } from '../types';
 import { routes } from '../constants';
-
-export type Student = {
-  age: number;
-  classes: Class[];
-  createdAt: string; // Datetime
-  firstName: string;
-  lastName: string;
-  id: number;
-};
 
 /**
  * Future improvement

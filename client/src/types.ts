@@ -16,6 +16,15 @@ export type SortModel = {
   direction: SortDirection;
 };
 
+export type Student = {
+  age: number;
+  classes: Class[];
+  createdAt: string; // Datetime
+  firstName: string;
+  lastName: string;
+  id: number;
+};
+
 export type Class = {
   id: number;
   name: string;
