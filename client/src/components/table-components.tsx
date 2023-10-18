@@ -27,6 +27,7 @@ const StyledTable = styled.table<{
   border: 1px solid ${colors.black};
   border-spacing: 0;
   border-collapse: collapse;
+  width: 100%;
   td {
     padding: 8px;
   }
@@ -36,16 +37,22 @@ const StyledTable = styled.table<{
   thead td {
     font-weight: bold;
   }
-  td {
+  tr {
     border: 1px solid ${colors.black};
     border-collapse: collapse;
+  }
+  td {
+    border-right: 1px solid;
+    &:last-of-type {
+      border-right: none;
+    }
   }
   ${({ $theme }) =>
     $theme === Theme.dark &&
     css`
       border-color: ${colors.white};
       thead,
-      td {
+      tr {
         border-color: ${colors.white};
       }
     `}
