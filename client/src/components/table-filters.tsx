@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Class } from '../hooks/use-classes-data';
+import { Class } from '../types';
 import { Theme, useTheme } from '../hooks/use-theme';
 import { colors } from '../constants';
 import { Input } from './input';

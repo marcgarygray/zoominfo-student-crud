@@ -5,7 +5,7 @@
 
 import { routes } from './constants';
 import { Student } from './hooks/use-students-data';
-import { SortDirection, SortModel, SortableColumn } from './pages/students';
+import { SortDirection, SortModel, SortableColumn } from './types';
 
 export function get(url: string) {
   return fetch(url);

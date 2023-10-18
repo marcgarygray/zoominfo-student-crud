@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Page } from '../components/page';
-import { useClassesData } from '../hooks/use-classes-data';
-import { useStudentsData } from '../hooks/use-students-data';
 import {
   deleteMultipleStudents,
   deleteSingleStudent,
@@ -18,30 +16,19 @@ import {
   Table,
 } from '../components/table-components';
 import { routes } from '../constants';
-
-export enum SortableColumn {
-  Age,
-  DateAdded,
-  LastName,
-}
-
-export enum SortDirection {
-  ASC,
-  DESC,
-}
-
-export type SortModel = {
-  column: SortableColumn;
-  direction: SortDirection;
-};
+import {
+  SelectionModel,
+  SortableColumn,
+  SortDirection,
+  SortModel,
+} from '../types';
+import { useStudentListPageData } from '../hooks/use-student-list-page-data';
 
 export function Students() {
   const navigate = useNavigate();
 
   // selection, sort, and filter states
-  const [selectedStudents, setSelectedStudents] = useState<
-    Record<number, boolean>
-  >({});
+  const [selectedStudents, setSelectedStudents] = useState<SelectionModel>({});
   const [sortModel, setSortModel] = useState<SortModel>({
     column: SortableColumn.LastName,
     direction: SortDirection.ASC,
@@ -49,26 +36,8 @@ export function Students() {
   const [classFilter, setClassFilter] = useState(-1);
   const [searchString, setSearchString] = useState('');
 
-  /**
-   * Future improvement: Using a fetching library (React Query)
-   * so we don't need to manually handle refetch logic and can use cache invalidation
-   */
   // data
-  const [refetch, setRefetch] = useState(false);
-  const { students, loading: studentsLoading } = useStudentsData({
-    refetch,
-  });
-  useEffect(() => {
-    if (refetch) {
-      setRefetch(false);
-    }
-  }, [refetch, setRefetch]);
-  const { classes, loading: classesLoading } = useClassesData();
-
-  const loading = useMemo(
-    () => classesLoading || studentsLoading,
-    [classesLoading, studentsLoading]
-  );
+  const { loading, classes, students, refetch } = useStudentListPageData();
 
   // handlers
   const onCheckboxClick = (id: number) => {
@@ -102,7 +71,7 @@ export function Students() {
     setDeleting(id);
     try {
       await deleteSingleStudent(id);
-      setRefetch(true);
+      refetch();
     } catch (e) {
       console.error(e);
     } finally {
@@ -119,11 +88,22 @@ export function Students() {
       await deleteMultipleStudents(
         Object.keys(selectedStudents).map((key) => Number(key))
       );
-      setRefetch(true);
+      refetch();
     } catch (e) {
       console.error(e);
     } finally {
       setBulkDeleting(false);
+    }
+  };
+
+  const onSelectAllClick: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (e.target.checked) {
+      const newSelectionModel: SelectionModel = Object.fromEntries(
+        students.map((student) => [student.id, true])
+      );
+      setSelectedStudents(newSelectionModel);
+    } else {
+      setSelectedStudents({});
     }
   };
 
@@ -169,7 +149,15 @@ export function Students() {
             <Table>
               <thead>
                 <tr>
-                  <td></td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={
+                        Object.keys(selectedStudents).length === students.length
+                      }
+                      onChange={onSelectAllClick}
+                    />
+                  </td>
                   <td>ID</td>
                   <td>First Name</td>
                   <SortableColumnHeader

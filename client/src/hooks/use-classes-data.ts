@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { get } from '../utils';
 import { routes } from '../constants';
-export type Class = {
-  id: number;
-  name: string;
-};
+import { Class } from '../types';
 
 /**
  * Future improvement

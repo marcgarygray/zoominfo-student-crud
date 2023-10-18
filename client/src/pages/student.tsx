@@ -3,18 +3,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Page } from '../components/page';
 import { get, post, update } from '../utils';
 import { Button } from '../components/button';
-import { Class, useClassesData } from '../hooks/use-classes-data';
+import { useClassesData } from '../hooks/use-classes-data';
 import { Input } from '../components/input';
 import { Form } from '../components/form';
 import { FormPageHeader } from '../components/form-page-header';
+import { Class, SelectionModel } from '../types';
 
 export function Student() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
-  const [selectedClasses, setSelectedClasses] = useState<
-    Record<number, boolean>
-  >({});
+  const [selectedClasses, setSelectedClasses] = useState<SelectionModel>({});
   const [fetching, setFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -58,10 +57,9 @@ export function Student() {
       setFirstName(responseBody.firstName);
       setLastName(responseBody.lastName);
       setAge(responseBody.age);
-      const selectionModel: Record<number, boolean> = {};
-      responseBody.classes.forEach((singleClass: Class) => {
-        selectionModel[singleClass.id] = true;
-      });
+      const selectionModel: SelectionModel = Object.fromEntries(
+        responseBody.classes.map((singleClass: Class) => [singleClass.id], true)
+      );
       setSelectedClasses(selectionModel);
     };
 
@@ -71,7 +69,7 @@ export function Student() {
   /**
    * Future improvement
    * Put this into a context so we can share a single data fetch among components.
-   * Alternately, using a fetching library like RQ will simple get the data from the cache
+   * Alternately, using a fetching library like RQ will simply get the data from the cache
    * and prevent us from needing to use a context
    */
   const { classes, loading } = useClassesData();

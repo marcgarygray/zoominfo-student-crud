@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Theme, useTheme } from '../hooks/use-theme';
-import { SortDirection } from '../pages/students';
+import { SortDirection } from '../types';
 import { colors } from '../constants';
 
 export const ButtonCell = styled.td`

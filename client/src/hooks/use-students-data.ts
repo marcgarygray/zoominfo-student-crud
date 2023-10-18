@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { get } from '../utils';
-import type { Class } from './use-classes-data';
+import { Class } from '../types';
 import { routes } from '../constants';
 
 export type Student = {
