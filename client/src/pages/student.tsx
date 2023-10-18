@@ -58,7 +58,7 @@ export function Student() {
       setLastName(responseBody.lastName);
       setAge(responseBody.age);
       const selectionModel: SelectionModel = Object.fromEntries(
-        responseBody.classes.map((singleClass: Class) => [singleClass.id], true)
+        responseBody.classes.map((singleClass: Class) => [singleClass.id, true])
       );
       setSelectedClasses(selectionModel);
     };
