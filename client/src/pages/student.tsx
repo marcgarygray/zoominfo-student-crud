@@ -15,6 +15,7 @@ export function Student() {
     Record<number, boolean>
   >({});
   const [fetching, setFetching] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -33,14 +34,26 @@ export function Student() {
   }, [age, fetching, firstName, lastName]);
 
   useEffect(() => {
+    if (isNewStudent) {
+      return;
+    }
     const idNumber = Number(id);
     if (Number.isNaN(idNumber)) {
+      setErrorMessage(
+        'You have entered a non-numerical student ID. Please go back.'
+      );
       return;
     }
 
     const fetchStudentData = async () => {
       const response = await get(`/student/${idNumber}`);
       const responseBody = await response.json();
+      if (responseBody === null) {
+        setErrorMessage(
+          'You have entered an invalid student ID. Please go back.'
+        );
+        return;
+      }
       setFirstName(responseBody.firstName);
       setLastName(responseBody.lastName);
       setAge(responseBody.age);
@@ -52,7 +65,7 @@ export function Student() {
     };
 
     void fetchStudentData();
-  }, [id]);
+  }, [id, isNewStudent]);
 
   /**
    * Future improvement
@@ -67,7 +80,6 @@ export function Student() {
     try {
       if (isNewStudent) {
         await post({
-          url: '/student',
           body: {
             firstName,
             lastName,
@@ -110,12 +122,14 @@ export function Student() {
 
   return (
     <Page>
-      {loading ? (
-        'Loading...'
-      ) : (
+      <div>
+        <Button onClick={() => navigate('/students')}>&lt; Back</Button>
+        <h1>{isNewStudent ? 'Create' : 'Update'} Student</h1>
+      </div>
+      {errorMessage && <p>{errorMessage}</p>}
+      {loading && 'Loading...'}
+      {!loading && !errorMessage && (
         <>
-          <h1>{isNewStudent ? 'Create' : 'Update'} Student</h1>
-          <Button onClick={() => navigate('/students')}>&lt; Back</Button>
           <Form>
             <div>
               <label htmlFor="firstName">First name:</label>

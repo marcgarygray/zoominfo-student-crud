@@ -5,6 +5,7 @@ import { NotFound } from './pages/not-found';
 import { Welcome } from './pages/welcome';
 import { ThemeProvider } from './hooks/use-theme';
 import { ThemeToggle } from './components/theme-toggle';
+import { routes } from './constants';
 
 function App() {
   return (
@@ -13,8 +14,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={<Welcome />} />
-          <Route path="/students" element={<Students />} />
-          <Route path="/student/:id" element={<Student />} />
+          <Route path={routes.students} element={<Students />} />
+          <Route path={`${routes.student}/:id`} element={<Student />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

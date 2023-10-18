@@ -3,6 +3,7 @@
  * Use a modern HTTP library such as axios
  */
 
+import { routes } from './constants';
 import { Student } from './hooks/use-students-data';
 import { SortDirection, SortModel, SortableColumn } from './pages/students';
 
@@ -10,14 +11,8 @@ export function get(url: string) {
   return fetch(url);
 }
 
-export function post({
-  url,
-  body,
-}: {
-  url: string;
-  body: Record<string, unknown>;
-}) {
-  return fetch(url, {
+export function post({ body }: { body: Record<string, unknown> }) {
+  return fetch(routes.student, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: { 'Content-Type': 'application/json' },
@@ -34,7 +29,7 @@ export function update({
     classIds: number[];
   } & { id: number };
 }) {
-  return fetch(`/student/${student.id}`, {
+  return fetch(`${routes.student}/${student.id}`, {
     method: 'PUT',
     body: JSON.stringify(student),
     headers: { 'Content-Type': 'application/json' },
@@ -42,13 +37,13 @@ export function update({
 }
 
 export function deleteSingleStudent(id: number) {
-  return fetch(`/student/${id}`, {
+  return fetch(`${routes.student}/${id}`, {
     method: 'DELETE',
   });
 }
 
 export function deleteMultipleStudents(ids: number[]) {
-  return fetch('/students', {
+  return fetch(routes.students, {
     method: 'DELETE',
     body: JSON.stringify({
       studentIds: ids,

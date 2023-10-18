@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { get } from '../utils';
+import { routes } from '../constants';
 export type Class = {
   id: number;
   name: string;
@@ -15,7 +16,7 @@ export function useClassesData() {
 
   const fetchStudents = async () => {
     try {
-      const response = await get('/classes');
+      const response = await get(routes.classes);
       const responseBody = await response.json();
       setClasses(responseBody);
     } catch (e) {

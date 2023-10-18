@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import { get } from '../utils';
 import type { Class } from './use-classes-data';
+import { routes } from '../constants';
 
 export type Student = {
   age: number;
@@ -22,7 +23,7 @@ export function useStudentsData({ refetch }: { refetch?: boolean }) {
 
   const fetchStudents = async () => {
     try {
-      const response = await get('/students');
+      const response = await get(routes.students);
       const responseBody = await response.json();
       setStudents(responseBody);
       hasFetched.current = true;

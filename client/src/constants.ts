@@ -7,3 +7,9 @@ export const colors = {
   cornflower: '#6495ed',
   lavender: '#967bb6',
 };
+
+export const routes = {
+  student: '/student',
+  students: '/students',
+  classes: '/classes',
+};
