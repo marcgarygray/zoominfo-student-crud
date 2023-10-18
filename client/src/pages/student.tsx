@@ -6,6 +6,7 @@ import { Button } from '../components/button';
 import { Class, useClassesData } from '../hooks/use-classes-data';
 import { Input } from '../components/input';
 import { Form } from '../components/form';
+import { FormPageHeader } from '../components/form-page-header';
 
 export function Student() {
   const [firstName, setFirstName] = useState('');
@@ -122,10 +123,10 @@ export function Student() {
 
   return (
     <Page>
-      <div>
+      <FormPageHeader>
         <Button onClick={() => navigate('/students')}>&lt; Back</Button>
         <h1>{isNewStudent ? 'Create' : 'Update'} Student</h1>
-      </div>
+      </FormPageHeader>
       {errorMessage && <p>{errorMessage}</p>}
       {loading && 'Loading...'}
       {!loading && !errorMessage && (
